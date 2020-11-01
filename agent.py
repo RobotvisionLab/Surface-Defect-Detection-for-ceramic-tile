@@ -159,7 +159,7 @@ class Agent(object):
 		data_size=len(data_list)
 		return data_list,data_size
 
-	def listData1(self,data_dir,test_ratio=0.4,positive_index=POSITIVE_KolektorSDD):
+	def listData1(self,data_dir,test_ratio=0.2,positive_index=POSITIVE_KolektorSDD):
 		""" this function is designed for the Dataset of KolektorSDD,
 			the positive samples and negative samples will be divided into two lists
 		:param  data_dir:  the  data folder   of KolektorSDD
@@ -185,7 +185,7 @@ class Agent(object):
 					example_image = example_dir + '/' + example_list[j]
 					example_label = example_image.split(".")[0] + "_label.bmp"
 					# 判断是否是正样本
-					index = example_list[j].split(".")[0][-1]
+					index = example_list[j].split(".")[0]
 					if index in positive_index[i]:
 						Positive_examples_train.append([example_image, example_label])
 					else:
@@ -194,7 +194,7 @@ class Agent(object):
 				for j in range(len(example_list)):
 					example_image = example_dir + '/' + example_list[j]
 					example_label = example_image.split(".")[0] + "_label.bmp"
-					index=example_list[j].split(".")[0][-1]
+					index=example_list[j].split(".")[0]
 					if index in positive_index[i]:
 						Positive_examples_valid.append([example_image, example_label])
 					else:
@@ -203,6 +203,4 @@ class Agent(object):
 			return Positive_examples_train,Negative_examples_train
 		if self.__Param["mode"] is "testing":
 			return Positive_examples_valid,Negative_examples_valid
-
-
 
