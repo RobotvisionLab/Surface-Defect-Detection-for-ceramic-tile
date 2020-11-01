@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
-slim=tf.contrib.slim
+slim = tf.contrib.slim
 from config import  *
 from tensorflow.python.ops import embedding_ops
 from tensorflow.python.layers.core import Dense
@@ -47,20 +47,23 @@ class Model(object):
                 with slim.arg_scope([slim.conv2d],
                                     padding='SAME',
                                     activation_fn=tf.nn.relu,
-                                    normalizer_fn=slim.batch_norm):
+                                    normalizer_fn=None):
                     net = slim.conv2d(input, 32, [5, 5],scope='conv1')
                     net = slim.conv2d(net, 32, [5, 5], scope='conv2')
+                    net = tf.contrib.layers.group_norm(net)
                     net=slim.max_pool2d(net,[2,2],[2,2],scope='pool1')
 
                     net = slim.conv2d(net, 64, [5, 5],scope='conv3')
                     net = slim.conv2d(net, 64, [5, 5], scope='conv4')
                     net = slim.conv2d(net, 64, [5, 5], scope='conv5')
+                    net = tf.contrib.layers.group_norm(net)
                     net=slim.max_pool2d(net,[2,2],[2,2],scope='pool2')
 
                     net = slim.conv2d(net, 64, [5, 5],scope='conv6')
                     net = slim.conv2d(net, 64, [5, 5], scope='conv7')
                     net = slim.conv2d(net, 64, [5, 5],scope='conv8')
                     net = slim.conv2d(net, 64, [5, 5], scope='conv9')
+                    net = tf.contrib.layers.group_norm(net)
                     net=slim.max_pool2d(net,[2,2],[2,2],scope='pool3')
 
                     net = slim.conv2d(net, 1024, [15, 15], scope='conv10')
@@ -76,7 +79,7 @@ class Model(object):
                 with slim.arg_scope([slim.conv2d],
                                     padding='SAME',
                                     activation_fn=tf.nn.relu,
-                                    normalizer_fn=slim.batch_norm):
+                                    normalizer_fn=None):
                     net=tf.concat([feature,mask],axis=3)
                     net = slim.max_pool2d(net, [2, 2], [2, 2], scope='pool1')
                     net = slim.conv2d(net, 8, [5, 5], scope='conv1')
@@ -105,7 +108,7 @@ class Model(object):
         loss_pixel = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=logits_pixel, labels=PixelLabel_reshape))
         loss_class = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits_class,labels=Label))
         loss_total=loss_pixel+loss_class
-        optimizer = tf.train.GradientDescentOptimizer(self.__learn_rate)
+        optimizer = tf.train.AdamOptimizer(self.__learn_rate)
         train_var_list = [v for v in tf.trainable_variables() ]
         train_segment_var_list = [v for v in tf.trainable_variables() if 'segment' in v.name ]
         train_decision_var_list = [v for v in tf.trainable_variables() if 'decision' in v.name]
@@ -127,6 +130,7 @@ class Model(object):
         self.optimize_decision = optimize_decision
         self.optimize_total = optimize_total
         self.init_op=init_op
+        self.logits_pixel = logits_pixel
 
     def save(self):
         self.__saver.save(
