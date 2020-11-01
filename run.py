@@ -1,5 +1,5 @@
 import argparse
-from agent import Agent
+from agentt import Agent
 
 #默认参数(Notes : some params are disable )
 DefaultParam = {
@@ -9,7 +9,8 @@ DefaultParam = {
     "batch_size": 1,
     "learn_rate": 0.001,
     "momentum": 0.9,                 # 优化器参数(disable)
-    "data_dir": "../Datasets/KolektorSDD",  # 数据路径
+    #"data_dir": "/home/lab209-2/Alldata/dqf/Deep-Learning-Approach-for-Surface-Defect-Detection/312",  # 数据路径
+    "data_dir": "./ci",  # 数据路径
     "checkPoint_dir": "checkpoint",  # 模型保存路径
     "Log_dir": "Log",  # 日志打印路径
     "valid_ratio": 0,  # 数据集中用来验证的比例  (disable)
