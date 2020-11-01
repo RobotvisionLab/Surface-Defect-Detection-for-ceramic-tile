@@ -20,6 +20,8 @@ class DataManager(object):
         self.number_batch = int(np.floor(len(self.data_list) /self.batch_size))
         self.next_batch=self.get_next()
 
+    #从迭代器里获取数据
+    #获取所有数据->复制×迭代次数->打乱数据->分批次一个一批->返回一批数据
     def get_next(self):
         dataset = tf.data.Dataset.from_generator(self.generator, (tf.float32, tf.int32,tf.int32, tf.string))
         dataset = dataset.repeat(self.epochs_num)
@@ -30,6 +32,11 @@ class DataManager(object):
         out_batch = iterator.get_next()
         return out_batch
 
+    #输入图片列表
+    #返回图片（改图片大小为指定大小）
+    #返回图片（分辨率为1/8,二值化）及其标签（标签：有白点则为1）
+    #返回图片名称
+    #以上4项打包成迭代器返回（tf.float32, tf.int32,tf.int32, tf.string）
     def generator(self):
         for index in range(len(self.data_list)):
             file_basename_image,file_basename_label = self.data_list[index]
@@ -38,10 +45,13 @@ class DataManager(object):
             image= self.read_data(image_path)
             label = self.read_data(label_path)
             label_pixel,label=self.label_preprocess(label)
+            #变换，每个像素一个数组，先按行
             image = (np.array(image[:, :, np.newaxis]))
             label_pixel = (np.array(label_pixel[:, :, np.newaxis]))
             yield image, label_pixel,label, file_basename_image
 
+    #输入图片
+    #返回图片（改变为指定大小）灰度像素0-255
     def read_data(self, data_name):
         img = cv2.imread(data_name, 0)  # /255.#read the gray image
         img = cv2.resize(img, (IMAGE_SIZE[1], IMAGE_SIZE[0]))
@@ -49,7 +59,8 @@ class DataManager(object):
         # image = (np.array(img[:, :, np.newaxis]))
         return img
 
-
+    #输入图片
+    #返回图片（分辨率变为1/8,二值化,如果有白点则返回标签值1）
     def label_preprocess(self,label):
         label = cv2.resize(label, (int(IMAGE_SIZE[1]/8), int(IMAGE_SIZE[0]/8)))
         label_pixel=self.ImageBinarization(label)
@@ -58,6 +69,8 @@ class DataManager(object):
             label=1
         return  label_pixel,label
 
+    #输入图片
+    #返回图片（二值化,像素值>1？1：0）
     def ImageBinarization(self,img, threshold=1):
         img = np.array(img)
         image = np.where(img > threshold, 1, 0)
@@ -91,6 +104,3 @@ class DataManager(object):
 
     def get_label(self,f):
         return  f.split('.')[-2].split('_')[1]
-
-
-
