@@ -109,15 +109,6 @@ class Agent(object):
                             _, loss_value_batch = self.__sess.run([self.model.optimize_segment, self.model.loss_pixel],
                                                                   feed_dict={self.model.Image: img_batch,
                                                                              self.model.PixelLabel: label_pixel_batch})
-                        elif mode == "decision":
-                            _, loss_value_batch = self.__sess.run([self.model.optimize_decision, self.model.loss_class],
-                                                                  feed_dict={self.model.Image: img_batch,
-                                                                             self.model.Label: label_batch})
-                        elif mode == "total":
-                            _, loss_value_batch = self.__sess.run([self.model.optimize_total, self.model.loss_total],
-                                                                  feed_dict={self.model.Image: img_batch,
-                                                                             self.model.PixelLabel: label_pixel_batch,
-                                                                             self.model.Label: label_batch})
                         iter_loss += loss_value_batch
                         # 可视化
                         if i % self.__Param["valid_frequency"] == 0 and i > 0:

@@ -101,34 +101,22 @@ class Model(object):
         PixelLabel=tf.placeholder(tf.float32, shape=(self.__batch_size, IMAGE_SIZE[0]/8,IMAGE_SIZE[1]/8, 1), name='PixelLabel')
         Label = tf.placeholder(tf.int32, shape=(self.__batch_size), name='Label')
         features, logits_pixel, mask=SegmentNet(Image,'segment',self.is_training)
-        logits_class,output_class=DecisionNet(features,mask, 'decision', self.is_training)
         #损失函数
         logits_pixel=tf.reshape(logits_pixel,[self.__batch_size,-1])
         PixelLabel_reshape=tf.reshape(PixelLabel,[self.__batch_size,-1])
         loss_pixel = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=logits_pixel, labels=PixelLabel_reshape))
-        loss_class = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits_class,labels=Label))
-        loss_total=loss_pixel+loss_class
         optimizer = tf.train.AdamOptimizer(self.__learn_rate)
         train_var_list = [v for v in tf.trainable_variables() ]
         train_segment_var_list = [v for v in tf.trainable_variables() if 'segment' in v.name ]
-        train_decision_var_list = [v for v in tf.trainable_variables() if 'decision' in v.name]
         optimize_segment = optimizer.minimize(loss_pixel,var_list=train_segment_var_list)
-        optimize_decision = optimizer.minimize(loss_class, var_list=train_decision_var_list)
-        optimize_total = optimizer.minimize(loss_total, var_list=train_var_list)
         init_op=tf.global_variables_initializer()
         self.Image=Image
         self.PixelLabel = PixelLabel
         self.Label = Label
         self.features = features
         self.mask = mask
-        self.logits_class=logits_class
-        self.output_class=output_class
         self.loss_pixel = loss_pixel
-        self.loss_class = loss_class
-        self.loss_total = loss_total
         self.optimize_segment = optimize_segment
-        self.optimize_decision = optimize_decision
-        self.optimize_total = optimize_total
         self.init_op=init_op
         self.logits_pixel = logits_pixel
 
