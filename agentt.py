@@ -200,9 +200,9 @@ class Agent(object):
             self.logger.info("NP = {}".format(count_FP))
             self.logger.info("TN = {}".format(count_TN))
             self.logger.info("FN = {}".format(count_FN))
-            self.logger.info("accuracy(准确率) = {:.4f}".format((count_TP + count_TN) / count))
-            self.logger.info("prescision（查准率） = {:.4f}".format(prescision))
-            self.logger.info("recall（查全率） = {:.4f}".format(recall))
+            self.logger.info("accuracy = {:.4f}".format((count_TP + count_TN) / count))
+            self.logger.info("prescision = {:.4f}".format(prescision))
+            self.logger.info("recall = {:.4f}".format(recall))
             self.logger.info("the visualization saved in {}".format(visualization_dir))
     def valid(self):
         pass
@@ -385,9 +385,9 @@ class Agent(object):
         print("FP = {}".format(count_FP))
         print("TN = {}".format(count_TN))
         print("FN = {}".format(count_FN))
-        print("accuracy(准确率) = {:.4f}".format(accuracy))
-        print("prescision（查准率） = {:.4f}".format(prescision))
-        print("recall（查全率） = {:.4f}".format(recall))
+        print("accuracy = {:.4f}".format(accuracy))
+        print("prescision = {:.4f}".format(prescision))
+        print("recall = {:.4f}".format(recall))
 
         self.csv_writer.writerow([self.seg_count_total_pics, filename, count_TP, count_FP,  count_FN,
                             count_TN,round(accuracy,4), round(prescision,4), round(recall, 4)])
@@ -426,9 +426,9 @@ class Agent(object):
         print("FP = {}".format(self.seg_count_FP))
         print("TN = {}".format(self.seg_count_TN))
         print("FN = {}".format(self.seg_count_FN))
-        print("accuracy(准确率) = {:.4f}".format(accuracy))
-        print("prescision（查准率） = {:.4f}".format(prescision))
-        print("recall（查全率） = {:.4f}".format(recall))
+        print("accuracy() = {:.4f}".format(accuracy))
+        print("prescision（） = {:.4f}".format(prescision))
+        print("recall（） = {:.4f}".format(recall))
 
         self.logger.info("output of decision network:===========================")
         self.logger.info('===========Accuracy,Precision,Recall of total files============')
