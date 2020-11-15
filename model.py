@@ -74,29 +74,6 @@ class Model(object):
                     mask=net
             return features,logits_pixel,mask
 
-        def DecisionNet(feature,mask, scope, is_training,num_classes=2, reuse=None):
-            with tf.variable_scope(scope, reuse=reuse):
-                with slim.arg_scope([slim.conv2d],
-                                    padding='SAME',
-                                    activation_fn=tf.nn.relu,
-                                    normalizer_fn=None):
-                    net=tf.concat([feature,mask],axis=3)
-                    net = slim.max_pool2d(net, [2, 2], [2, 2], scope='pool1')
-                    net = slim.conv2d(net, 8, [5, 5], scope='conv1')
-                    net = slim.max_pool2d(net, [2, 2], [2, 2], scope='pool2')
-                    net = slim.conv2d(net, 16, [5, 5], scope='conv2')
-                    net = slim.max_pool2d(net, [2, 2], [2, 2], scope='pool3')
-                    net = slim.conv2d(net, 32, [5, 5], scope='conv3')
-                    vector1=math_ops.reduce_mean(net,[1,2],name='pool4', keepdims=True)
-                    vector2=math_ops.reduce_max(net,[1,2],name='pool5', keepdims=True)
-                    vector3=math_ops.reduce_mean(mask,[1,2],name='pool6', keepdims=True)
-                    vector4=math_ops.reduce_max(mask,[1,2],name='pool7', keepdims=True)
-                    vector=tf.concat([vector1,vector2,vector3,vector4],axis=3)
-                    vector=tf.squeeze(vector,axis=[1,2])
-                    logits = slim.fully_connected(vector, num_classes,activation_fn=None)
-                    output=tf.argmax(logits,axis=1)
-                    return  logits,output
-
         Image = tf.placeholder(tf.float32, shape=(self.__batch_size, IMAGE_SIZE[0],IMAGE_SIZE[1], 1), name='Image')
         PixelLabel=tf.placeholder(tf.float32, shape=(self.__batch_size, IMAGE_SIZE[0]/8,IMAGE_SIZE[1]/8, 1), name='PixelLabel')
         Label = tf.placeholder(tf.int32, shape=(self.__batch_size), name='Label')

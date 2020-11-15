@@ -12,6 +12,7 @@ from datetime import datetime
 import csv
 
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2"
 
 class Agent(object):
     def __init__(self, param):
