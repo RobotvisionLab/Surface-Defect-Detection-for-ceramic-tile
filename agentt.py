@@ -184,7 +184,7 @@ class Agent(object):
                         else:
                             count_TN += 1
 
-            self.caculate_total(IMAGE_SIZE[0]/8 * IMAGE_SIZE[1]/8)
+            #self.caculate_total(IMAGE_SIZE[0]/8 * IMAGE_SIZE[1]/8)
 
             # 准确率
             accuracy = (count_TP + count_TN) / count
@@ -235,7 +235,7 @@ class Agent(object):
             print("mask_batch[i]  type: ", mask_temp.shape, type(mask_temp))
 
             #计算单张图片、所有图片的准确率（Accuracy）精确率（Precision）召回率（Recall）
-            self.caculate_single(filename, mask_temp, label_pixel)
+            #self.caculate_single(filename, mask_temp, label_pixel)
             #720896 11264 11264 (1536, 1408)
             print(image.size, label_pixel.size, mask.size, img_visual.size)
 
