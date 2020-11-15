@@ -161,14 +161,14 @@ class Agent(object):
                     np.set_printoptions(threshold=np.inf)
 
                     #print("mask_batch,,,,,,,,:", mask_batch)
-                    print("img.shape,,,,,,,,:", img_batch.shape)
-                    print("label_pixel_batch.shape,,,,,,,,:", label_pixel_batch.shape)
-                    print("mask_batch.shape,,,,,,,,:", mask_batch.shape)
-                    print("features.shape,,,,,,,,:", features.shape)
-                    print("logits_pixel.shape,,,,,,,,:", logits_pixel.shape)
+                    #print("img.shape,,,,,,,,:", img_batch.shape)
+                    #print("label_pixel_batch.shape,,,,,,,,:", label_pixel_batch.shape)
+                    #print("mask_batch.shape,,,,,,,,:", mask_batch.shape)
+                    #print("features.shape,,,,,,,,:", features.shape)
+                    #print("logits_pixel.shape,,,,,,,,:", logits_pixel.shape)
                     #print("logits,,,,,,,,:", logits_pixel)
                     #print("output_batch,,,,,,,,:", output_batch)
-                    print("output_batch.shape,,,,,,,,:", output_batch.shape)
+                    #print("output_batch.shape,,,,,,,,:", output_batch.shape)
                     self.visualization(img_batch, label_pixel_batch, mask_batch, file_name_batch,
                                    save_dir=visualization_dir)
 
@@ -231,13 +231,13 @@ class Agent(object):
             #后两张图双线性插值法扩大到与第一张一样大
             img_visual = utils.concatImage([image, label_pixel, mask])
 
-            print("label_pixel type: ", label_pixel.shape, type(label_pixel))
-            print("mask_batch[i]  type: ", mask_temp.shape, type(mask_temp))
+            #print("label_pixel type: ", label_pixel.shape, type(label_pixel))
+            #print("mask_batch[i]  type: ", mask_temp.shape, type(mask_temp))
 
             #计算单张图片、所有图片的准确率（Accuracy）精确率（Precision）召回率（Recall）
             #self.caculate_single(filename, mask_temp, label_pixel)
             #720896 11264 11264 (1536, 1408)
-            print(image.size, label_pixel.size, mask.size, img_visual.size)
+            #print(image.size, label_pixel.size, mask.size, img_visual.size)
 
             visualization_path = os.path.join(save_dir, filename)
             img_visual.save(visualization_path)
