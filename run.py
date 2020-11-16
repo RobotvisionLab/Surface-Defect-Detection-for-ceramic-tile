@@ -5,9 +5,9 @@ from agentt import Agent
 DefaultParam = {
     "mode": "testing",  # 模式  {"training","testing" }
     "train_mode":"decision", #训练模式，{"segment":only train segment net,"decision": only train decision net, "total": both}
-    "epochs_num": 50,
+    "epochs_num": 200,
     "batch_size": 1,
-    "learn_rate": 0.001,
+    "learn_rate": 0.0001,
     "momentum": 0.9,                 # 优化器参数(disable)
     #"data_dir": "/home/lab209-2/Alldata/dqf/Deep-Learning-Approach-for-Surface-Defect-Detection/312",  # 数据路径
     "data_dir": "./ci",  # 数据路径
